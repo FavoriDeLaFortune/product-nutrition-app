@@ -5,13 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.productnutritionapp.R
+import android.widget.ArrayAdapter
+import androidx.core.widget.addTextChangedListener
 import com.example.productnutritionapp.databinding.FragmentProductListBinding
+import com.example.productnutritionapp.ui.stateholders.RecipeViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class RecipeListFragment : Fragment() {
 
     private var _binding: FragmentProductListBinding? = null
-    val binding: FragmentProductListBinding get() = _binding!!
+    private val binding: FragmentProductListBinding get() = _binding!!
+    private val recipeViewModel: RecipeViewModel by viewModel()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,13 +25,38 @@ class RecipeListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_list, container, false)
+    ): View {
+        _binding = FragmentProductListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
+    override fun onResume() {
+        super.onResume()
+        dropDownMenuEditText()
+    }
+
+    private fun dropDownMenuEditText() {
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_dropdown_item_1line)
+        binding.apply {
+            searchEt.threshold = 3
+            searchEt.setAdapter(adapter)
+            recipeViewModel.autoCompleteList.observe(viewLifecycleOwner) {
+                adapter.clear()
+                adapter.addAll(it)
+                adapter.notifyDataSetChanged()
+            }
+            searchEt.addTextChangedListener { text ->
+                recipeViewModel.getAutoCompleteRecipeList(text.toString())
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
