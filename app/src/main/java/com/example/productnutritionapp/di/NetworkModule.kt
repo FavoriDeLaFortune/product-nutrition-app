@@ -1,10 +1,10 @@
 package com.example.productnutritionapp.di
 
-import com.example.productnutritionapp.base.constansts.Constants.API_HOST
-import com.example.productnutritionapp.base.constansts.Constants.API_KEY
-import com.example.productnutritionapp.base.constansts.Constants.BASE_URL
-import com.example.productnutritionapp.base.constansts.Constants.HEADER_NAME_HOST
-import com.example.productnutritionapp.base.constansts.Constants.HEADER_NAME_KEY
+import com.example.productnutritionapp.base.constants.Constants.API_HOST
+import com.example.productnutritionapp.base.constants.Constants.API_KEY
+import com.example.productnutritionapp.base.constants.Constants.BASE_URL
+import com.example.productnutritionapp.base.constants.Constants.HEADER_NAME_HOST
+import com.example.productnutritionapp.base.constants.Constants.HEADER_NAME_KEY
 import com.example.productnutritionapp.data.network.repository.NetworkRepository
 import com.example.productnutritionapp.data.network.repository.NetworkRepositoryImpl
 import com.example.productnutritionapp.data.network.retrofit.RecipeApi
