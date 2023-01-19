@@ -2,9 +2,12 @@ package com.example.productnutritionapp.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.productnutritionapp.R
 import com.example.productnutritionapp.data.network.model.Recipe
 import com.example.productnutritionapp.databinding.ProductItemBinding
 
@@ -18,6 +21,19 @@ class RecipeAdapter : PagingDataAdapter<Recipe, RecipeAdapter.Holder>(RecipeDiff
         val recipe = getItem(position) ?: return
         with (holder.binding)  {
             recipeName.text = recipe.name
+            loadRecipePhoto(recipeIv, recipe.thumbnail_url)
+        }
+    }
+
+    private fun loadRecipePhoto(imageView: ImageView, url: String?) {
+        if (url != null) {
+            Glide.with(imageView.context)
+                .load(url)
+                .into(imageView)
+        } else {
+            Glide.with(imageView.context)
+                .load(R.drawable.ic_launcher_background)
+                .into(imageView)
         }
     }
 
