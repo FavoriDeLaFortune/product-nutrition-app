@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.productnutritionapp.databinding.FragmentProductListBinding
 import com.example.productnutritionapp.ui.adapters.RecipeAdapter
 import com.example.productnutritionapp.ui.stateholders.RecipeViewModel
@@ -57,7 +59,6 @@ class RecipeListFragment : Fragment() {
 
     private fun configureRecipeList() {
         binding.apply {
-            recipeRv.layoutManager = LinearLayoutManager(context)
             recipeRv.adapter = recipeAdapter
         }
     }
@@ -71,8 +72,10 @@ class RecipeListFragment : Fragment() {
                 autoCompleteAdapter.notifyDataSetChanged()
             }
             searchEt.addTextChangedListener { text ->
-                recipeViewModel.getAutoCompleteRecipeList(text.toString())
-                recipeViewModel.setQueryBy(text.toString())
+                if (text.toString().isNotEmpty()) {
+                    recipeViewModel.getAutoCompleteRecipeList(text.toString())
+                    recipeViewModel.setQueryBy(text.toString())
+                }
             }
         }
     }

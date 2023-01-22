@@ -29,6 +29,9 @@ class NetworkRepositoryImpl(private val recipeApi: RecipeApi) : NetworkRepositor
     private suspend fun getRecipes(query: String, pageIndex: Int, pageSize: Int): List<Recipe> =
         withContext(Dispatchers.IO) {
             try {
+                if (query == "") {
+                    return@withContext listOf()
+                }
                 val from = pageIndex * pageSize
                 val response = recipeApi.getRecipes(query, from, pageSize)
                 if (response.isSuccessful) {
