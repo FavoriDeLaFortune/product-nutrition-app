@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 
 interface NetworkRepository {
-    suspend fun getAutoCompleteList(prefix: String) : List<String>
+    suspend fun getAutoCompleteList(query: String) : List<String>
 
     fun getPagedRecipes(query: String) : Flow<PagingData<Recipe>>
 }

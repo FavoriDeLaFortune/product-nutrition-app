@@ -20,8 +20,8 @@ class RecipeAdapter : PagingDataAdapter<Recipe, RecipeAdapter.Holder>(RecipeDiff
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val recipe = getItem(position) ?: return
         with (holder.binding)  {
-            recipeName.text = recipe.name
-            loadRecipePhoto(recipeIv, recipe.thumbnail_url)
+            recipeName.text = recipe.title
+            loadRecipePhoto(recipeIv, recipe.image)
         }
     }
 
@@ -46,7 +46,7 @@ class RecipeAdapter : PagingDataAdapter<Recipe, RecipeAdapter.Holder>(RecipeDiff
 
 class RecipeDiffCallback : DiffUtil.ItemCallback<Recipe>() {
     override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-        return oldItem.name == newItem.name
+        return oldItem.title == newItem.title
     }
 
     override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {

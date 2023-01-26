@@ -74,7 +74,9 @@ class RecipeListFragment : Fragment() {
             searchEt.addTextChangedListener { text ->
                 if (text.toString().isNotEmpty()) {
                     recipeViewModel.getAutoCompleteRecipeList(text.toString())
-                    recipeViewModel.setQueryBy(text.toString())
+                    if (!autoCompleteCheckBox.isChecked) {
+                        recipeViewModel.setQueryBy(text.toString())
+                    }
                 }
             }
         }

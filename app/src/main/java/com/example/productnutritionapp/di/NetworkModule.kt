@@ -1,9 +1,7 @@
 package com.example.productnutritionapp.di
 
-import com.example.productnutritionapp.base.constants.Constants.API_HOST
 import com.example.productnutritionapp.base.constants.Constants.API_KEY
 import com.example.productnutritionapp.base.constants.Constants.BASE_URL
-import com.example.productnutritionapp.base.constants.Constants.HEADER_NAME_HOST
 import com.example.productnutritionapp.base.constants.Constants.HEADER_NAME_KEY
 import com.example.productnutritionapp.data.network.repository.NetworkRepository
 import com.example.productnutritionapp.data.network.repository.NetworkRepositoryImpl
@@ -17,8 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 val networkModule = module {
     factory { Interceptor { interceptor ->
         val request = interceptor.request().newBuilder()
-            .addHeader(HEADER_NAME_KEY, API_KEY)
-            .addHeader(HEADER_NAME_HOST, API_HOST).build()
+            .addHeader(HEADER_NAME_KEY, API_KEY).build()
         return@Interceptor interceptor.proceed(request) }
     }
     factory { provideOkHttpClient(get()) }

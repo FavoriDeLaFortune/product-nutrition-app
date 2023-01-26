@@ -7,17 +7,16 @@ import com.example.productnutritionapp.data.network.model.Recipe
 import com.example.productnutritionapp.data.network.paging.RecipePagingLoader
 import com.example.productnutritionapp.data.network.paging.RecipePagingSource
 import com.example.productnutritionapp.data.network.retrofit.RecipeApi
-import com.example.productnutritionapp.data.network.toDomainModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class NetworkRepositoryImpl(private val recipeApi: RecipeApi) : NetworkRepository {
-    override suspend fun getAutoCompleteList(prefix: String) = withContext(Dispatchers.IO) {
+    override suspend fun getAutoCompleteList(query: String) = withContext(Dispatchers.IO) {
         try {
-            val response = recipeApi.getAutoCompleteList(prefix)
+            val response = recipeApi.getAutoCompleteList(query)
             if (response.isSuccessful) {
-                response.body()!!.results.map { it.display }
+                response.body()!!.map { it.title }
             } else {
                 listOf()
             }
@@ -32,8 +31,8 @@ class NetworkRepositoryImpl(private val recipeApi: RecipeApi) : NetworkRepositor
                 if (query == "") {
                     return@withContext listOf()
                 }
-                val from = pageIndex * pageSize
-                val response = recipeApi.getRecipes(query, from, pageSize)
+                val offset = pageIndex * pageSize
+                val response = recipeApi.getRecipes(query, offset, pageSize)
                 if (response.isSuccessful) {
                     response.body()!!.results
                 } else {
