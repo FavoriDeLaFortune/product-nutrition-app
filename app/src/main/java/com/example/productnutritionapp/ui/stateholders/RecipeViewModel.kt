@@ -17,20 +17,13 @@ class RecipeViewModel(
     val handle: SavedStateHandle,
     private val networkRepository: NetworkRepository
 ) : ViewModel() {
-    private var _autoCompleteList = MutableLiveData<List<String>>()
-    val autoCompleteList: LiveData<List<String>> = _autoCompleteList
-
     private val queryBy = MutableLiveData("")
     val recipesFlow: Flow<PagingData<Recipe>> = queryBy.asFlow()
         .debounce(500)
         .flatMapLatest { networkRepository.getPagedRecipes(it) }
         .cachedIn(viewModelScope)
-
-    fun getAutoCompleteRecipeList(query: String) {
-        viewModelScope.launch {
-            _autoCompleteList.value = networkRepository.getAutoCompleteList(query)
-        }
-    }
+    val autoCompleteFlow: Flow<List<String>> = queryBy.asFlow()
+        .flatMapLatest { networkRepository.getAutoCompleteList(it) }
 
     fun setQueryBy(query: String) {
         if (queryBy.value == query) return

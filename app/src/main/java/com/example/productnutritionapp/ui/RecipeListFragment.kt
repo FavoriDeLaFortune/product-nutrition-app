@@ -66,17 +66,16 @@ class RecipeListFragment : Fragment() {
     private fun configureDropDownMenuEditText() {
         binding.apply {
             searchEt.setAdapter(autoCompleteAdapter)
-            recipeViewModel.autoCompleteList.observe(viewLifecycleOwner) {
-                autoCompleteAdapter.clear()
-                autoCompleteAdapter.addAll(it)
-                autoCompleteAdapter.notifyDataSetChanged()
+            lifecycleScope.launch {
+                recipeViewModel.autoCompleteFlow.collectLatest {
+                    autoCompleteAdapter.clear()
+                    autoCompleteAdapter.addAll(it)
+                    autoCompleteAdapter.notifyDataSetChanged()
+                }
             }
             searchEt.addTextChangedListener { text ->
                 if (text.toString().isNotEmpty()) {
-                    recipeViewModel.getAutoCompleteRecipeList(text.toString())
-                    if (!autoCompleteCheckBox.isChecked) {
-                        recipeViewModel.setQueryBy(text.toString())
-                    }
+                    recipeViewModel.setQueryBy(text.toString())
                 }
             }
         }
