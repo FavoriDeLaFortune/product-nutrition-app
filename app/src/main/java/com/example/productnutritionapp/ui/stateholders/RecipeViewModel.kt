@@ -10,7 +10,6 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 class RecipeViewModel(
@@ -19,7 +18,7 @@ class RecipeViewModel(
 ) : ViewModel() {
     private val queryBy = MutableLiveData("")
     val recipesFlow: Flow<PagingData<Recipe>> = queryBy.asFlow()
-        .debounce(500)
+        .debounce(1000)
         .flatMapLatest { networkRepository.getPagedRecipes(it) }
         .cachedIn(viewModelScope)
     val autoCompleteFlow: Flow<List<String>> = queryBy.asFlow()
